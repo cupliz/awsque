@@ -1,0 +1,83 @@
+import React from 'react'
+import { Auth } from 'aws-amplify'
+import setupAmplify from '../utils/setupAmplify'
+
+setupAmplify()
+
+function withAuth (WrappedComponent) {
+  return class extends React.Component {
+    constructor (props) {
+      super(props)
+      this.state = {
+        user: null,
+        isAuthenticating: true
+      }
+
+      this.signin = this.signin.bind(this)
+      this.signup = this.signup.bind(this)
+      this.logout = this.logout.bind(this)
+      this.verifyEmail = this.verifyEmail.bind(this)
+      this.confirmSignup = this.confirmSignup.bind(this)
+    }
+
+    async componentDidMount () {
+      let user
+      try {
+        user = await Auth.currentAuthenticatedUser()
+      } catch (e) {
+        console.log(e)
+      }
+      this.setState({ user, isAuthenticating: false })
+    }
+
+    async signin (email, password) {
+      try {
+        const res = await Auth.signIn(email, password)
+        this.setState({ user: res })
+        console.log(res)
+        return res
+      } catch (e) {
+        console.log(e)
+        throw new Error(e.message)
+      }
+    }
+
+    async signup (email, password) {
+      const res = await Auth.signUp({
+        username: email,
+        password: password
+      })
+      return res
+    }
+
+    async confirmSignup (username, code) {
+      const res = await Auth.confirmSignUp(username, code)
+      return res
+    }
+
+    async logout () {
+      return Auth.signOut()
+    }
+
+    async verifyEmail (code) {
+      const res = await Auth.verifyCurrentUserAttributeSubmit('email', code.toString())
+      return res
+    }
+
+    render () {
+      if (this.state.isAuthenticating) return null
+      return (
+        <WrappedComponent
+          signup={this.signup}
+          confirmSignup={this.confirmSignup}
+          signin={this.signin}
+          logout={this.logout}
+          verifyEmail={this.verifyEmail}
+          user={this.state.user}
+        />
+      )
+    }
+  }
+}
+
+export default withAuth
