@@ -10,9 +10,9 @@
     "deploy": "next build && serverless deploy"
   },
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "aws-amplify": "^1.1.6",
-    "aws-amplify-react": "^2.0.7",
     "bootstrap": "^4.1.3",
     "dotenv": "^6.1.0",
     "dotenv-webpack": "^1.5.7",

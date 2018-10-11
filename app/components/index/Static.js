@@ -1,7 +1,4 @@
 import Link from 'next/link'
-// import getConfig from 'next/config'
-// const { publicRuntimeConfig } = getConfig()
-// const { ASSETS_PREFIX } = publicRuntimeConfig
 
 const Static = () => (
   <div className='main-container'>
@@ -22,9 +19,9 @@ const Static = () => (
               <br className='hidden-xs hidden-sm' /> and support the ideas they
                 love
             </p>
-            <Link href='/signup'>
+            <Link href='/login'>
               <a className='btn btn--primary' href='#'>
-                <span className='btn__text'>Sign Up Now</span>
+                <span className='btn__text'>Sign In</span>
               </a>
             </Link>
           </div>

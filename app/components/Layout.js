@@ -1,14 +1,17 @@
+import React from 'react'
 import Nav from './Nav'
 import "../static/styles/style.scss"
-import Amplify from 'aws-amplify'
-import AWSConfig from '../aws-config'
-import { withAuthenticator } from 'aws-amplify-react';
-Amplify.configure(AWSConfig)
-const Layout = ({ children, user }) => (
-  <div>
-    <Nav user={user} />
-    {children}
-  </div>
-)
 
-export default withAuthenticator(Layout)
+class Layout extends React.Component {
+  render() {
+    const {children, user} = this.props
+    return (
+      <div>
+        <Nav {...this.props}/>
+        {children}
+      </div>
+    )
+  }
+}
+
+export default Layout

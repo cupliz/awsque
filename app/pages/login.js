@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Router from 'next/router'
 import Layout from '../components/Layout'
-// import withAuth from '../components/withAuth'
+import withAuth from '../components/withAuth'
 
 class Login extends React.Component {
   constructor (props) {
@@ -12,21 +12,13 @@ class Login extends React.Component {
       password: '',
       error: null
     }
-
-    this.handleUsernameChange = this.handleUsernameChange.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
-    this.login = this.login.bind(this)
   }
 
-  handleUsernameChange (e) {
-    this.setState({ username: e.target.value, error: null })
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value })
   }
 
-  handlePasswordChange (e) {
-    this.setState({ password: e.target.value, error: null })
-  }
-
-  async login (e) {
+  login = async (e) => {
     e.preventDefault()
     const { signin } = this.props
     const { username, password } = this.state
@@ -51,19 +43,19 @@ class Login extends React.Component {
                 <div className='col-sm-7 col-md-5'>
                   <h2>Login to continue</h2>
                   <p className='lead'> Welcome back, sign in with your existing Stack account credentials </p>
-                  <form>
+                  <form onSubmit={this.login}>
                     <div className='row'>
                       <div className='col-sm-12'>
-                        <input type='text' placeholder='Username' value={username} onChange={this.handleUsernameChange} />
+                        <input type='text' name='username' placeholder="Username" value={username} onChange={this.handleChange} />
                       </div>
                       <div className='col-sm-12'>
-                        <input type='password' placeholder='Password' value={password} onChange={this.handlePasswordChange} />
+                        <input type='password' name='password' placeholder="Password" value={password} onChange={this.handleChange} />
                       </div>
                       <div className='col-12'>
                         <p className='color--error'> {error} </p>
                       </div>
                       <div className='col-sm-12'>
-                        <button className='btn btn--primary type--uppercase' type='submit' onClick={this.login}>Login</button>
+                        <button className='btn btn--primary type--uppercase' type='submit'>Login</button>
                       </div>
                     </div>
                   </form>
@@ -80,4 +72,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login
+export default withAuth(Login)

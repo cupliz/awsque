@@ -1,14 +1,18 @@
 import React from 'react'
 import Layout from '../components/Layout'
 import Static from '../components/index/Static'
+import Main from '../components/index/Main'
+import withAuth from '../components/withAuth'
 
 class Index extends React.Component {
-  render(){
+  render() {
+    const { user } = this.props
+    console.log(user)
     return (
-      <Layout>
-        <Static />
+      <Layout {...this.props}>
+        {user ? <Main /> : <Static />}
       </Layout>
     )
   }
 }
-export default Index
+export default withAuth(Index)

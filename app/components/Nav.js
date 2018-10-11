@@ -1,10 +1,7 @@
 import { Fragment } from 'react'
 import Link from 'next/link'
-import getConfig from 'next/config'
-// const { publicRuntimeConfig = {} } = getConfig() || {}
-// const { ASSETS_PREFIX } = publicRuntimeConfig
 
-const Nav = ({ user }) => (
+const Nav = ({ user, logout }) => (
   <div className='nav-container'>
     <div>
       <nav id='menu1' className='bar bar-1 hidden-xs'>
@@ -50,6 +47,9 @@ const Nav = ({ user }) => (
                       <li>
                         <img alt='avatar' className='avatar image--xxs' src={'static/img/placeholder-avatar.png'} />
                     Konrad Adrian
+                      </li>
+                      <li>
+                        <a href='#' onClick={logout}>Logout</a>
                       </li>
                     </ul>
                   </div>

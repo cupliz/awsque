@@ -2,6 +2,7 @@ import React from "react"
 import Router, { withRouter } from "next/router"
 import Link from "next/link"
 import Layout from "../components/Layout"
+import withAuth from '../components/withAuth'
 
 import { Auth } from "aws-amplify"
 
@@ -108,4 +109,4 @@ class Signup extends React.Component {
   }
 }
 
-export default withRouter(Signup)
+export default withAuth(withRouter(Signup))

@@ -19,14 +19,6 @@ provider:
     prod: 1024
     default: 512
   timeout: 15
-  # environment:
-  #   NODE_ENV: ${env:NODE_ENV}
-  #   IN_LAMBDA: ${env:IN_LAMBDA}
-  #   region: ${env:region}
-  #   identityPoolId: ${env:identityPoolId}
-  #   identityPoolRegion: ${env:identityPoolRegion}
-  #   userPoolId: ${env:userPoolId}
-  #   userPoolWebClientId: ${env:userPoolWebClientId}
 
 functions:
   next:
