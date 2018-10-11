@@ -1,9 +1,6 @@
-const serverless = require('serverless-http')
-
 require('dotenv').config({ path: './.env'  })
-
-process.env.IN_LAMBDA = true
-process.env.NODE_ENV = 'production'
+const serverless = require('serverless-http')
+const { app, server } = require('./server');
 
 const binaryMimeTypes = [
   'application/javascript',
@@ -29,10 +26,12 @@ const binaryMimeTypes = [
   'font/woff2'
 ]
 
-const appServer = require('./server')
-
-const handler = serverless(appServer, {
-  binary: binaryMimeTypes
-})
-
-exports.handler = (evt, ctx, callback) => handler(evt, ctx, callback)
+exports.handler = (event, context, callback) => {
+  app.prepare()
+    .then(() => {
+      const handler = serverless(server, {
+        binary: binaryMimeTypes,
+      });
+      return handler(event, context, callback);
+    });
+};

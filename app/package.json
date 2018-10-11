@@ -1,11 +1,13 @@
 {
   "name": "awsque",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "nodemon server.js",
     "next": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "emulate": "next build && serverless offline",
+    "deploy": "next build && serverless deploy"
   },
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
@@ -20,5 +22,11 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-offline": "^3.27.0",
+    "serverless-http": "^1.6.0",
+    "serverless-plugin-warmup": "^3.6.2-rc.1",
+    "serverless-dotenv-plugin": "^2.0.1"
+  }
 }

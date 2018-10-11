@@ -1,51 +1,44 @@
-service: nextjs-aws-serverless
-
-package:
-  exclude:
-    - pages/**
-    - tests/**
-    - node_modules/.cache/**
-    - .cache
-    - package.json
-    - package-lock.json
-    - "**.test.js"
-    - "__snapshots__/"
-  include:
-    - .next/**
+service: nextjs-serverless
 
 plugins:
   - serverless-offline
-  - serverless-apigw-binary
+  - serverless-plugin-warmup
+  - serverless-dotenv-plugin
 
 custom:
   serverless-offline:
     port: 8000
-    dontPrintOutput: true
-  apigwBinary:
-    types:
-      - '*/*'
+  dotenv:
+    path: .env
 
 provider:
   name: aws
-  runtime: nodejs6.10
-  memorySize: 256
+  runtime: nodejs8.10
+  region: ap-southeast-1
+  memorySize:
+    prod: 1024
+    default: 512
   timeout: 15
-  environment:
-    NODE_ENV: production
+  # environment:
+  #   NODE_ENV: ${env:NODE_ENV}
+  #   IN_LAMBDA: ${env:IN_LAMBDA}
+  #   region: ${env:region}
+  #   identityPoolId: ${env:identityPoolId}
+  #   identityPoolRegion: ${env:identityPoolRegion}
+  #   userPoolId: ${env:userPoolId}
+  #   userPoolWebClientId: ${env:userPoolWebClientId}
 
 functions:
-  nextJsRootApp:
+  next:
     handler: lambda.handler
     events:
       - http:
           path: /
           method: ANY
-  nextJsAnyApp:
-    handler: lambda.handler
-    events:
       - http:
           path: /{any+}
           method: ANY
+    warmup: true
 
 resources:
   Description: Next.js testing in AWS lambda

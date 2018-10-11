@@ -1,22 +1,31 @@
-const express = require('express');
-const next = require('next');
-const {NODE_ENV, IN_LAMBDA} = process.env
-const dev = NODE_ENV !== 'production';
-const port = parseInt(process.env.PORT, 10) || 3000;
-const app = next({ dev });
-const handle = app.getRequestHandler();
+const express = require('express')
+const next = require('next')
+const {NODE_ENV, IN_LAMBDA, PORT} = process.env
 
-function createServer() {
-  const server = express();
-  server.get('*', (req, res) => handle(req, res));
-  return server;
+const port = parseInt(PORT, 10) || 3000
+const dev = NODE_ENV !== 'production'
+const app = next({ dev })
+const handle = app.getRequestHandler()
+
+const createServer = () => {
+  const server = express()
+  // server.use(compression())
+  server.get('*', (req, res) => handle(req, res))
+  return server
 }
 
-if (IN_LAMBDA) {
-  module.exports = createServer();
-} else {
-  app.prepare().then(() => {
-    const server = createServer();
-    server.listen(port);
-  });
+const server = createServer()
+
+if (!process.env.IN_LAMBDA) {
+  app.prepare()
+    .then(() => {
+      server.listen(port, (err) => {
+        if (err) throw err
+        // eslint-disable-next-line
+        console.log(`> Ready on http://localhost:${port}`)
+      })
+    })
 }
+
+exports.app = app
+exports.server = server
